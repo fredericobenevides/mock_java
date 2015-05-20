@@ -1,5 +1,3 @@
 require "mock_java/version"
+require 'mock_java/mock_class.rb'
 
-module MockJava
-  # Your code goes here...
-end

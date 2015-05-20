@@ -1,6 +1,9 @@
+require 'mock_java'
+
 $CLASSPATH << 'spec/java_classes'
 
 RSpec.configure do |config|
+  config.include MockJava
 
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
