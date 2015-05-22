@@ -10,25 +10,25 @@ module MockJava
       @init_with = init_with
     end
 
+    def mock
+      child_class = Class.new(@clazz)
+      add_ruby_methods_to child_class
+
+      if @init_with
+        child_class.new *@init_with
+      else
+        child_class.new
+      end
+    end
+
+    private
     def create_test_class_name
       if @clazz.java_class.name =~ /(\w+)$/
         "Test#{$1}"
       end
     end
 
-    def create_ruby_initialize
-      if @init_with
-        params = ''
-        @init_with.size.times do |t|
-            params << "param#{t},"
-        end
-        params.gsub!(/(.*),$/, '\1')
-
-        "\n def initialize(#{params})\n super #{params}\n end"
-      end
-    end
-
-    def create_ruby_methods
+    def add_ruby_methods_to(child_class)
       java_methods = @clazz.java_class.declared_instance_methods
       java_methods.collect! { |x| [x.name, x.generic_parameter_types.size]}
 
@@ -36,35 +36,21 @@ module MockJava
         method_name  = m[0]
         total_params = m[1]
 
-        if total_params == 0
-          s << "\n define_method :#{method_name} do\n super \nend"
-        else
-          params = ''
-          total_params.times do |t|
-            params << "param#{t},"
-          end
-          params.gsub!(/(.*),$/, '\1')
-
-          s << "\n define_method :#{method_name} do |#{params}| \n super #{params} \n end"
-        end
+        create_ruby_method child_class, method_name, total_params
       end
     end
 
-    def mock
-      class_creation = <<-EOF
-        class #{@test_class_name} < #{@clazz}
-          #{create_ruby_initialize}
-          #{create_ruby_methods}
-        end
-      EOF
-
-      eval class_creation
-
-      created_class = MockJava::MockClass.const_get(@test_class_name)
-      if @init_with
-        created_class.new *@init_with
+    def create_ruby_method(child_class, method_name, total_params = 0)
+      if total_params == 0
+        child_class.class_eval "\n def #{method_name}\n super \nend"
       else
-        created_class.new
+        joined_params = ''
+        total_params.times do |t|
+          joined_params << "param#{t},"
+        end
+        joined_params.gsub!(/(.*),$/, '\1')
+
+        child_class.class_eval "\n def #{method_name}(#{joined_params}) \n super #{joined_params} \n end"
       end
     end
 
