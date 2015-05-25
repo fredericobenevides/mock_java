@@ -9,22 +9,17 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Frederico Benevides']
   spec.email         = ['fredbene@gmail.com']
 
-  spec.summary       = %(Mock java is a lib to mock java classes in the ruby world!)
-  spec.description   = %(Mock java help you mock java/jruby classes in the ruby
-                         world! Mock java is not a real mock, but a lib creates
-                         a ruby classes extendings the real java classes.
-                         Making this you can still use rspec to mock java
-                         and change behaviours)
+  spec.summary       = 'Mock java is a lib to mock java classes in the ruby world!'
+  spec.description   = 'mock_java a lib that help to mock java classes in ruby world!'
 
   spec.homepage      = 'http://github.com/fredericobenevides/mock_java'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split('\x0').reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = 'exe'
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.files         = `git ls-files`.split("\n").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.test_files    = `git ls-files -- spec`.split("\n")
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 1.9'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.2.0'
+  spec.add_development_dependency 'rspec', '~> 3.2'
 end
