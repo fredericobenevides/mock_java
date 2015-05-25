@@ -9,18 +9,15 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Frederico Benevides']
   spec.email         = ['fredbene@gmail.com']
 
-  spec.summary       = %(TODO: Write a short summary, because Rubygems requires one.)
-  spec.description   = %(TODO: Write a longer description or delete this line.)
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = 'MIT'
+  spec.summary       = %(Mock java is a lib to mock java classes in the ruby world!)
+  spec.description   = %(Mock java help you mock java/jruby classes in the ruby
+                         world! Mock java is not a real mock, but a lib creates
+                         a ruby classes extendings the real java classes.
+                         Making this you can still use rspec to mock java
+                         and change behaviours)
 
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
-  end
+  spec.homepage      = 'http://github.com/fredericobenevides/mock_java'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split('\x0').reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
