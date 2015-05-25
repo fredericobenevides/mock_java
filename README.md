@@ -1,39 +1,39 @@
-# MockJava
+# MockJava - Mocking java classes in Ruby World!
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mock_java`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Essential Information
 
-TODO: Delete this and the text above, and describe your gem
+Mock java is not a real mock, but a lib that creates a ruby class that extends
+java classes.
 
-## Installation
+Since it creates a ruby class, you can use rspec to change the behaviour class
+since it's a real Ruby class!
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'mock_java'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install mock_java
+I created this since I don't like the idea of using rspec using tools from
+java classes to mock like Mockito! So if you have the same will, this might be
+your tool!
 
 ## Usage
 
-TODO: Write usage instructions here
+First include the module in your `spec_helper` file:
 
-## Development
+```ruby
+RSpec.configure do |config|
+  config.include MockJava
+end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+after importing your java file with:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+`java_import com.package.ExampleJavaClass`
 
-## Contributing
+To mock this example class you mock with this command:
 
-1. Fork it ( https://github.com/[my-github-username]/mock_java/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+`mock = mock_java ExampleJavaClass`
+
+If you need you need to pass arguments to your constructors use this:
+
+`mock = mock_java ExampleJavaClass, 'param1', 'param2'`
+
+## Contributting to MockJava
+
+* For, fix, then send me a pull request.
