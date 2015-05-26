@@ -34,6 +34,13 @@ If you need you need to pass arguments to your constructors use this:
 
 `mock = mock_java ExampleJavaClass, 'param1', 'param2'`
 
+If you already have an object you can mock with this:
+
+```ruby
+example = ExampleJavaClass.new
+mock = mock_java example
+```
+
 ## Contributting to MockJava
 
 * For, fix, then send me a pull request.

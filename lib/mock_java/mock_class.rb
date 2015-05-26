@@ -5,7 +5,7 @@ module MockJava
 
   class MockClass
     def initialize(clazz, *init_with)
-      @clazz = clazz
+      load_class clazz
       @test_class_name = create_test_class_name
       @init_with = init_with
     end
@@ -22,6 +22,14 @@ module MockJava
     end
 
     private
+    def load_class(clazz)
+      if clazz.java_kind_of? Class
+        @clazz = clazz
+      else
+        @clazz = clazz.class
+      end
+    end
+
     def create_test_class_name
       if @clazz.java_class.name =~ /(\w+)$/
         "Test#{$1}"
