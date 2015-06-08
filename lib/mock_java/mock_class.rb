@@ -37,8 +37,7 @@ module MockJava
     end
 
     def add_ruby_methods_to(child_class)
-      java_methods = @clazz.java_class.declared_instance_methods
-      java_methods.collect! { |x| [x.name, x.generic_parameter_types.size]}
+      java_methods = load_java_methods @clazz.java_class
 
       ruby_methods = java_methods.inject("") do |s, m|
         method_name  = m[0]
@@ -50,7 +49,7 @@ module MockJava
 
     def create_ruby_method(child_class, method_name, total_params = 0)
       if total_params == 0
-        child_class.class_eval "\n def #{method_name}\n super \nend"
+        child_class.class_eval "def #{method_name}; super; end"
       else
         joined_params = ''
         total_params.times do |t|
@@ -58,8 +57,25 @@ module MockJava
         end
         joined_params.gsub!(/(.*),$/, '\1')
 
-        child_class.class_eval "\n def #{method_name}(#{joined_params}) \n super #{joined_params} \n end"
+        child_class.class_eval "def #{method_name}(#{joined_params}); super #{joined_params}; end"
       end
+    end
+
+    def load_java_methods(java_class, child_java_methods = [])
+      java_methods = child_java_methods
+
+      if java_class.name != "java.lang.Object"
+        java_methods = java_class.declared_instance_methods
+        java_methods.collect! { |x| [x.name, x.generic_parameter_types.size]}
+
+        # add the methods from child and parent, remove duplicates
+        java_methods = java_methods + child_java_methods
+        java_methods.uniq!
+
+        java_methods = load_java_methods java_class.superclass, java_methods
+      end
+
+      java_methods
     end
 
   end
