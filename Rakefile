@@ -9,7 +9,10 @@ end
 desc 'Compile the java classes'
 task :java_compiler do
   puts "Compiling java classes"
-  system('javac spec/java_classes/**/*.java')
+  Dir.glob(File.join('spec', 'java_classes','**','*.java')).each do |file|
+    file.gsub!('spec/java_classes/', '')
+    system("cd spec/java_classes && javac #{file}")
+  end
 end
 
 desc 'Run the test on classes'
